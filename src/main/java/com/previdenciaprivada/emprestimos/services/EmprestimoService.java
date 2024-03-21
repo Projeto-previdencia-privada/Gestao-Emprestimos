@@ -13,58 +13,81 @@ import java.util.UUID;
 
 @Service
 public class EmprestimoService {
-    double somaBeneficios;
-    final double taxaRestricao = 0.3;
+    private static final BigDecimal taxaRestricao = new BigDecimal("0.3");
     private final EmprestimoDAO emprestimoDAO;
 
-    public EmprestimoService(EmprestimoDAO emprestimoDAO) {
+    private final BeneficiosConnection beneficiosConnection;
+    public EmprestimoService(EmprestimoDAO emprestimoDAO, BeneficiosConnection beneficiosConnection) {
         this.emprestimoDAO = emprestimoDAO;
+        this.beneficiosConnection = beneficiosConnection;
     }
 
-    public String addEmprestimo(EmprestimoDTORequest emprestimoInfo) {
-        BigDecimal taxa = new BigDecimal(taxaRestricao);
-        BigDecimal restricao = new BigDecimal(somaBeneficios).multiply(taxa);
-        BigDecimal valorParcela = new BigDecimal(emprestimoInfo.valorParcela());
-        Emprestimo idEmprestimo =  emprestimoDAO.addEmprestimo(emprestimoInfo.CPF(), new BigDecimal(emprestimoInfo.valorParcela()), emprestimoInfo.quantidadeParcelas());
-        return idEmprestimo.getIdEmprestimo().toString();
+    public String addEmprestimo(EmprestimoDTORequest emprestimoInfo) throws NumberFormatException{
+            this.validarCPF(emprestimoInfo.CPF());
+
+            if(this.verificarEmprestimo( BigDecimal.valueOf(emprestimoInfo.valorParcela()), emprestimoInfo.CPF()) ){
+                    return "";
+            }
+
+            Emprestimo idEmprestimo = emprestimoDAO.addEmprestimo(emprestimoInfo.CPF(), BigDecimal.valueOf(emprestimoInfo.valorParcela()), emprestimoInfo.quantidadeParcelas());
+            return idEmprestimo.getIdEmprestimo().toString();
     }
 
     public List<Emprestimo> getEmprestimos(String CPF) {
-        return emprestimoDAO.getEmprestimosPorCPF(CPF);
+        return emprestimoDAO.getEmprestimosPorCPF(CPF).orElseThrow();
     }
 
     public Emprestimo getEmprestimo(UUID idEmprestimo) {
-        return emprestimoDAO.getEmprestimoPorId(idEmprestimo);
+
+        return emprestimoDAO.getEmprestimoPorId(idEmprestimo).orElseThrow();
     }
 
-    public int alterarValorParcela(UUID idEmprestimo, double valorParcela) {
+    public void alterarValorParcela(UUID idEmprestimo, double valorParcela) {
         BigDecimal valorCorrigido = new BigDecimal(valorParcela);
 
-        Emprestimo emprestimo = emprestimoDAO.getEmprestimoPorId(idEmprestimo);
+        Emprestimo emprestimo = emprestimoDAO.getEmprestimoPorId(idEmprestimo).orElseThrow();
         emprestimo.setValorParcela(valorCorrigido);
 
         emprestimoDAO.updateEmprestimo(emprestimo);
-        return 0;
     }
 
-    public int alterarQtdParcelas(UUID idEmprestimo, int quantidadeParcelas) {
-        Emprestimo emprestimo = emprestimoDAO.getEmprestimoPorId(idEmprestimo);
+    public void alterarQtdParcelas(UUID idEmprestimo, int quantidadeParcelas) {
+        Emprestimo emprestimo = emprestimoDAO.getEmprestimoPorId(idEmprestimo).orElseThrow();
         emprestimo.setQuantidadeParcelas(quantidadeParcelas);
 
         emprestimoDAO.updateEmprestimo(emprestimo);
-        return 0;
     }
 
 
-    public int finalizarEmprestimo(UUID idEmprestimo) {
-        Emprestimo emprestimo = emprestimoDAO.getEmprestimoPorId(idEmprestimo);
+    public void finalizarEmprestimo(UUID idEmprestimo) {
+        Emprestimo emprestimo = emprestimoDAO.getEmprestimoPorId(idEmprestimo).get();
         emprestimo.setStatus(Status.Concluido);
 
         emprestimoDAO.updateEmprestimo(emprestimo);
 
-        return 0;
     }
-   // public boolean verificarEmprestimo(BigDecimal valorParcela, String CPF) {
+   public boolean verificarEmprestimo(BigDecimal valorParcela, String CPF) {
+        BigDecimal valorTotalBeneficios = BigDecimal.valueOf(beneficiosConnection.getSomaBeneficios(CPF));
 
-   // }
+        List<Emprestimo> emprestimos = emprestimoDAO.getEmprestimosPorCPF(CPF).orElseThrow();
+        BigDecimal somaParcelas = emprestimos.stream()
+                .map(emprestimo -> emprestimo.getValorParcela())
+                .reduce(new BigDecimal(0), (a, b) -> a.add(b));
+
+        BigDecimal novoTotal = somaParcelas.add(valorParcela);
+        BigDecimal totalDisponivel = valorTotalBeneficios.multiply(taxaRestricao);
+
+        /* Se a subtração entre o valor da nova parcela, acrescido do total de parcelas ativas, e o total de crédito disponivel for maior que zero
+        , o usuário não possui crédito sufuciente logo a comparação será verdadeira */
+
+        return novoTotal.compareTo(totalDisponivel) > 0 ? true : false;
+
+   }
+    public void validarCPF(String CPF) throws NumberFormatException {
+        if(CPF.length() == 11) {
+            Long.valueOf(CPF);
+            return;
+        }
+        throw new NumberFormatException();
+    }
 }

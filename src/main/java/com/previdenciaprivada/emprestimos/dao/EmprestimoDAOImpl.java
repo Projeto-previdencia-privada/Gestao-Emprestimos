@@ -1,15 +1,12 @@
 package com.previdenciaprivada.emprestimos.dao;
 
-import com.previdenciaprivada.emprestimos.EmprestimosApplication;
 import com.previdenciaprivada.emprestimos.models.Emprestimo;
 import com.previdenciaprivada.emprestimos.models.EmprestimoRepository;
 import com.previdenciaprivada.emprestimos.models.Status;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,13 +42,12 @@ public class EmprestimoDAOImpl implements EmprestimoDAO{
     }
 
     @Override
-    public List<Emprestimo> getEmprestimosPorCPF(String CPF) {
-        List<Emprestimo> emprestimos = emprestimoRepository.findEmprestimoByCPFAndStatus(CPF, Status.Ativo);
-        return emprestimos;
+    public Optional<List<Emprestimo>> getEmprestimosPorCPF(String CPF) {
+        return emprestimoRepository.findEmprestimoByCPFAndStatus(CPF, Status.Ativo);
     }
 
     @Override
-    public Emprestimo getEmprestimoPorId(UUID idEmprestimo) {
-        return emprestimoRepository.findById(idEmprestimo).get();
+    public Optional<Emprestimo> getEmprestimoPorId(UUID idEmprestimo) {
+        return emprestimoRepository.findById(idEmprestimo);
     }
 }

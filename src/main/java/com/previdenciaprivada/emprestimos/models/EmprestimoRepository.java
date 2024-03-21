@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface EmprestimoRepository extends CrudRepository<Emprestimo, UUID> {
-    List<Emprestimo> findEmprestimoByCPFAndStatus(String CPF, Status status);
+    Optional<List<Emprestimo>> findEmprestimoByCPFAndStatus(String CPF, Status status);
 }
