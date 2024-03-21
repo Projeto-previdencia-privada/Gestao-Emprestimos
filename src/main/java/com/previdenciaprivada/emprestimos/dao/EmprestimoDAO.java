@@ -4,12 +4,15 @@ import com.previdenciaprivada.emprestimos.models.Emprestimo;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 public interface EmprestimoDAO {
 
     Emprestimo addEmprestimo(String CPF, BigDecimal valorParcela, int quantidadeParcelas);
 
-    //int updateEmprestimo();
+    int updateEmprestimo(Emprestimo emprestimo);
 
-    List<Emprestimo> getEmprestimo(String CPF);
+    List<Emprestimo> getEmprestimosPorCPF(String CPF);
+
+    Emprestimo getEmprestimoPorId(UUID idEmprestimo);
 }

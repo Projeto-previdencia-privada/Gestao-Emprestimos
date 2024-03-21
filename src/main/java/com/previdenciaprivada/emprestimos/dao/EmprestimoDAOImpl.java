@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -38,10 +39,19 @@ public class EmprestimoDAOImpl implements EmprestimoDAO{
     }
 
     @Override
-    public List<Emprestimo> getEmprestimo(String CPF) {
-        List<Emprestimo> emprestimos = emprestimoRepository.findEmprestimoByCPFAndStatus(CPF, Status.Conlcuido);
+    public int updateEmprestimo(Emprestimo emprestimo) {
+        emprestimoRepository.save(emprestimo);
+        return 0;
+    }
+
+    @Override
+    public List<Emprestimo> getEmprestimosPorCPF(String CPF) {
+        List<Emprestimo> emprestimos = emprestimoRepository.findEmprestimoByCPFAndStatus(CPF, Status.Ativo);
         return emprestimos;
     }
 
-
+    @Override
+    public Emprestimo getEmprestimoPorId(UUID idEmprestimo) {
+        return emprestimoRepository.findById(idEmprestimo).get();
+    }
 }
