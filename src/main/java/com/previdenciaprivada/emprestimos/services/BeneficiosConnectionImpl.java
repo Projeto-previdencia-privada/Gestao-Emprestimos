@@ -1,12 +1,10 @@
 package com.previdenciaprivada.emprestimos.services;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-
-
-@Repository
+@Component
 public class BeneficiosConnectionImpl implements BeneficiosConnection{
     @Override
     public double getSomaBeneficios(String CPF) {

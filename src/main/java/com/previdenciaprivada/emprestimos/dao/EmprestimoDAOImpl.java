@@ -36,9 +36,8 @@ public class EmprestimoDAOImpl implements EmprestimoDAO{
     }
 
     @Override
-    public int updateEmprestimo(Emprestimo emprestimo) {
+    public void updateEmprestimo(Emprestimo emprestimo) {
         emprestimoRepository.save(emprestimo);
-        return 0;
     }
 
     @Override

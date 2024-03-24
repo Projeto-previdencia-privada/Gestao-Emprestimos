@@ -11,7 +11,7 @@ public interface EmprestimoDAO {
 
     Emprestimo addEmprestimo(String CPF, BigDecimal valorParcela, int quantidadeParcelas);
 
-    int updateEmprestimo(Emprestimo emprestimo);
+    void updateEmprestimo(Emprestimo emprestimo);
 
     Optional<List<Emprestimo>> getEmprestimosPorCPF(String CPF);
 

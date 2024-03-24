@@ -14,6 +14,7 @@ import java.util.UUID;
 @Service
 public class EmprestimoService {
     private static final BigDecimal taxaRestricao = new BigDecimal("0.3");
+
     private final EmprestimoDAO emprestimoDAO;
 
     private final BeneficiosConnection beneficiosConnection;
@@ -60,11 +61,10 @@ public class EmprestimoService {
 
 
     public void finalizarEmprestimo(UUID idEmprestimo) {
-        Emprestimo emprestimo = emprestimoDAO.getEmprestimoPorId(idEmprestimo).get();
+        Emprestimo emprestimo = emprestimoDAO.getEmprestimoPorId(idEmprestimo).orElseThrow();
         emprestimo.setStatus(Status.Concluido);
 
         emprestimoDAO.updateEmprestimo(emprestimo);
-
     }
    public boolean verificarEmprestimo(BigDecimal valorParcela, String CPF) {
         BigDecimal valorTotalBeneficios = BigDecimal.valueOf(beneficiosConnection.getSomaBeneficios(CPF));
@@ -80,7 +80,7 @@ public class EmprestimoService {
         /* Se a subtração entre o valor da nova parcela, acrescido do total de parcelas ativas, e o total de crédito disponivel for maior que zero
         , o usuário não possui crédito sufuciente logo a comparação será verdadeira */
 
-        return novoTotal.compareTo(totalDisponivel) > 0 ? true : false;
+        return novoTotal.compareTo(totalDisponivel) > 0;
 
    }
     public void validarCPF(String CPF) throws NumberFormatException {
