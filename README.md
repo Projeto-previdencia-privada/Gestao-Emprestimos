@@ -9,7 +9,7 @@ O projeto é estruturado com base nos seguintes diretórios a partir da raiz src
 **Controller:** Destinada a funções de roteamento.<br>
 **DTO:** Objetos destinados a encapsular requisições e respostas provenientes de requisições http. <br>
 **Services:** Classes destinadas à lógica da aplicação, essencialmente qualquer função que não faça uso dos metódos das classes do diretório Controller. <br>
-**DAO:** Classes que encapsulam valores provenientes de uma classe que se comunica diretamente com um banco de dados.
+**DAO:** Classes que encapsulam valores provenientes de uma classe que se comunica diretamente com um banco de dados. <br>
 **Models:** Classes que representam tabelas em um banco de dados ou qualquer classe que manipule diretamente um banco de dados. <br> 
 
 # Pré-requisitos
