@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.previdenciaprivada.emprestimos.controller.EmprestimosControllerTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.873 s -- in com.previdenciaprivada.emprestimos.controller.EmprestimosControllerTest

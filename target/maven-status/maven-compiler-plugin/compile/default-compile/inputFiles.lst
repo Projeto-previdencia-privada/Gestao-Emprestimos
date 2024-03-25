@@ -1,0 +1,14 @@
+/home/nev/emprestimos/src/main/java/com/previdenciaprivada/emprestimos/services/EmprestimoService.java
+/home/nev/emprestimos/src/main/java/com/previdenciaprivada/emprestimos/dto/EmprestimoDTOUpdate.java
+/home/nev/emprestimos/src/main/java/com/previdenciaprivada/emprestimos/dto/EmprestimoDTOTerminate.java
+/home/nev/emprestimos/src/main/java/com/previdenciaprivada/emprestimos/services/BeneficiosConnection.java
+/home/nev/emprestimos/src/main/java/com/previdenciaprivada/emprestimos/dao/EmprestimoDAO.java
+/home/nev/emprestimos/src/main/java/com/previdenciaprivada/emprestimos/controller/EmprestimosController.java
+/home/nev/emprestimos/src/main/java/com/previdenciaprivada/emprestimos/services/BeneficiosConnectionImpl.java
+/home/nev/emprestimos/src/main/java/com/previdenciaprivada/emprestimos/dto/EmprestimoDTOView.java
+/home/nev/emprestimos/src/main/java/com/previdenciaprivada/emprestimos/EmprestimosApplication.java
+/home/nev/emprestimos/src/main/java/com/previdenciaprivada/emprestimos/dto/EmprestimoDTORequest.java
+/home/nev/emprestimos/src/main/java/com/previdenciaprivada/emprestimos/dao/EmprestimoDAOImpl.java
+/home/nev/emprestimos/src/main/java/com/previdenciaprivada/emprestimos/models/Status.java
+/home/nev/emprestimos/src/main/java/com/previdenciaprivada/emprestimos/models/EmprestimoRepository.java
+/home/nev/emprestimos/src/main/java/com/previdenciaprivada/emprestimos/models/Emprestimo.java
