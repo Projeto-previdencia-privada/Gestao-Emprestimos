@@ -1,0 +1,26 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      SPRING_APPLICATION_NAME: emprestimos
+      SPRING_JPA_HIBERNATE.DDL_AUTO: update
+      SPRING_DATASOURCE_URL: jdbc:postgresql://psql:5432/gerenciamento
+      SPRING_DATASOURCE_USERNAME: test
+      SPRING_DATASOURCE_PASSWORD: test
+
+    ports:
+      - 9000:8080
+
+  psql:
+    image: postgres:alpine3.18
+    volumes:
+      - ./src/test/resources/sql/init-schema.sql:/docker-entrypoint-initdb.d/init-schema.sql
+      - ./src/test/resources/sql/seed-data.sql:/docker-entrypoint-initdb.d/seed-data.sql
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: gerenciamento
+    ports:
+      - 5600:5432
