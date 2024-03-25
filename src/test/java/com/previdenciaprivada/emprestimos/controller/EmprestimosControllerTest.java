@@ -91,7 +91,7 @@ class EmprestimosControllerTest {
         MvcResult result = mockMvc.perform(request).andReturn();
         JSONObject object = new JSONObject(result.getResponse().getContentAsString());
         //Assert
-        assertEquals(object.get("idEmprestimo"), "fa81f244-d11d-47ed-946d-e0165482cb1e");
+        assertEquals(object.get("id-emprestimo"), "fa81f244-d11d-47ed-946d-e0165482cb1e");
     }
 
     @Test
