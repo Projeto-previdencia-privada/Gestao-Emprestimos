@@ -28,3 +28,7 @@ Após a inicialização dos containers, o serviço vai estar disponível na port
 **Para fazer uso dos endpoints da API use a documentação presente no** [arquivo de assinutura](https://github.com/Projeto-previdencia-privada/Documentacao/blob/main/Gest%C3%A3o%20de%20Empr%C3%A9stimos%20-%20Documenta%C3%A7%C3%A3o/assinaturaAPI.yaml). 
  Recomenda-se copiar  e colar o conteúdo do arquivo de assinatura dentro do editor https://editor.swagger.io/ a fim de ter uma vizualização melhor da documentação da API.
 
+#### Exemplo de requisição
+```
+  http://localhost:9000/api/v1/emprestimos/vizualizaremprestimo?id-emprestimo=fa81f244-d11d-47ed-946d-e0165482cb1e
+```
