@@ -3,6 +3,7 @@ package com.previdenciaprivada.emprestimos.controller;
 import com.previdenciaprivada.emprestimos.dto.EmprestimoDTORequest;
 import com.previdenciaprivada.emprestimos.dto.EmprestimoDTOTerminate;
 import com.previdenciaprivada.emprestimos.dto.EmprestimoDTOUpdate;
+import com.previdenciaprivada.emprestimos.dto.EmprestimoDTOView;
 import com.previdenciaprivada.emprestimos.models.Emprestimo;
 import com.previdenciaprivada.emprestimos.services.EmprestimoService;
 import org.springframework.http.HttpStatus;
@@ -40,11 +41,19 @@ public class EmprestimosController {
 
     @GetMapping("vizualizaremprestimo")
     @ResponseBody
-    public ResponseEntity<Emprestimo> vizualizarEmprestimo(@RequestParam(name="id-emprestimo") UUID idEmprestimo) {
+    public ResponseEntity<EmprestimoDTOView> vizualizarEmprestimo(@RequestParam(name="id-emprestimo") UUID idEmprestimo) {
 
         try {
             Emprestimo emprestimo = emprestimoService.getEmprestimo(idEmprestimo);
-            return new ResponseEntity<>(emprestimo, HttpStatus.OK);
+            EmprestimoDTOView emprestimoView = new EmprestimoDTOView(
+                    emprestimo.getIdEmprestimo(),
+                    emprestimo.getCPF(),
+                    emprestimo.getValorParcela(),
+                    emprestimo.getQuantidadeParcelas(),
+                    emprestimo.getDataEmprestimo(),
+                    emprestimo.getStatus()
+            );
+            return new ResponseEntity<>(emprestimoView, HttpStatus.OK);
         }
         catch (NoSuchElementException err) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Empréstimo não encontrado", err);
