@@ -98,7 +98,7 @@ class EmprestimosControllerTest {
     void cadastrarEmprestimo() throws Exception {
         //Given
         RequestBuilder request = MockMvcRequestBuilders.post("/api/v1/emprestimos/cadastraremprestimo")
-            .content(new ObjectMapper().writeValueAsString(new EmprestimoDTORequest("23643829167", 12, 340)))
+            .content(new ObjectMapper().writeValueAsString(new EmprestimoDTORequest("12345678910", 12, 340)))
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON);
         //Then

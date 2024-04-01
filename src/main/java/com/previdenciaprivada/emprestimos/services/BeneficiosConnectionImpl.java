@@ -4,15 +4,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Objects;
+
 @Component
 public class BeneficiosConnectionImpl implements BeneficiosConnection{
     @Override
     public double getSomaBeneficios(String CPF) {
-        String URL =  "http://www.randomnumberapi.com/api/v1.0/random?min=200&max=10000";
+        String URL =  "http://localhost:9000/concessao/soma?id=" + CPF;
         RestTemplate connection = new RestTemplate();
 
         ResponseEntity<String> response = connection.getForEntity(URL, String.class);
-        //return Double.parseDouble(Objects.requireNonNull(response.getBody().replaceAll("\\p{P}", "")));
-        return 12275.90;
+        System.out.println(response.getBody());
+        return Double.parseDouble(Objects.requireNonNull(response.getBody().replaceAll("\\p{P}", "")));
     }
 }
