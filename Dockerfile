@@ -4,6 +4,6 @@ RUN addgroup -S app && adduser -S app -G app
 
 USER app
 
-COPY target/*.jar app.jar
+COPY ./*.jar app.jar
 
 ENTRYPOINT ["java", "-jar", "/app.jar"]
