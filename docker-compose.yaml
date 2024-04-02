@@ -18,6 +18,7 @@ services:
     volumes:
       - ./src/test/resources/sql/init-schema.sql:/docker-entrypoint-initdb.d/init-schema.sql
       - ./src/test/resources/sql/seed-data.sql:/docker-entrypoint-initdb.d/seed-data.sql
+      - ./data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: test
       POSTGRES_PASSWORD: test
