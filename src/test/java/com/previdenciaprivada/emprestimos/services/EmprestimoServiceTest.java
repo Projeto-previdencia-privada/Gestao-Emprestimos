@@ -1,8 +1,7 @@
 package com.previdenciaprivada.emprestimos.services;
 
 import com.previdenciaprivada.emprestimos.dao.EmprestimoDAO;
-import com.previdenciaprivada.emprestimos.models.Emprestimo;
-import com.previdenciaprivada.emprestimos.models.Status;
+import com.previdenciaprivada.emprestimos.dao.Emprestimo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

@@ -4,7 +4,7 @@ import com.previdenciaprivada.emprestimos.dto.EmprestimoDTORequest;
 import com.previdenciaprivada.emprestimos.dto.EmprestimoDTOTerminate;
 import com.previdenciaprivada.emprestimos.dto.EmprestimoDTOUpdate;
 import com.previdenciaprivada.emprestimos.dto.EmprestimoDTOView;
-import com.previdenciaprivada.emprestimos.models.Emprestimo;
+import com.previdenciaprivada.emprestimos.dao.Emprestimo;
 import com.previdenciaprivada.emprestimos.services.EmprestimoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

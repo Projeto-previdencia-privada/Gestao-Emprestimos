@@ -1,8 +1,6 @@
 package com.previdenciaprivada.emprestimos.dao;
 
-import com.previdenciaprivada.emprestimos.models.Emprestimo;
-import com.previdenciaprivada.emprestimos.models.EmprestimoRepository;
-import com.previdenciaprivada.emprestimos.models.Status;
+import com.previdenciaprivada.emprestimos.services.Status;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;

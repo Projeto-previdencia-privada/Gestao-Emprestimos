@@ -3,8 +3,8 @@ package com.previdenciaprivada.emprestimos.controller;
 import com.previdenciaprivada.emprestimos.dto.EmprestimoDTORequest;
 import com.previdenciaprivada.emprestimos.dto.EmprestimoDTOTerminate;
 import com.previdenciaprivada.emprestimos.dto.EmprestimoDTOUpdate;
-import com.previdenciaprivada.emprestimos.models.Emprestimo;
-import com.previdenciaprivada.emprestimos.models.Status;
+import com.previdenciaprivada.emprestimos.dao.Emprestimo;
+import com.previdenciaprivada.emprestimos.services.Status;
 import com.previdenciaprivada.emprestimos.services.EmprestimoService;
 
 import org.json.JSONObject;

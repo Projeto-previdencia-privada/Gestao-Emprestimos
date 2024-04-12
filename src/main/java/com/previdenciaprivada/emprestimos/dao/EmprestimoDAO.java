@@ -1,7 +1,5 @@
 package com.previdenciaprivada.emprestimos.dao;
 
-import com.previdenciaprivada.emprestimos.models.Emprestimo;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
