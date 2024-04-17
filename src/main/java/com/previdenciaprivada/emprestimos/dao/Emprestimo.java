@@ -1,5 +1,6 @@
-package com.previdenciaprivada.emprestimos.models;
+package com.previdenciaprivada.emprestimos.dao;
 
+import com.previdenciaprivada.emprestimos.services.Status;
 import jakarta.persistence.*;
 import lombok.*;
 

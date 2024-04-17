@@ -1,5 +1,6 @@
-package com.previdenciaprivada.emprestimos.models;
+package com.previdenciaprivada.emprestimos.dao;
 
+import com.previdenciaprivada.emprestimos.services.Status;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

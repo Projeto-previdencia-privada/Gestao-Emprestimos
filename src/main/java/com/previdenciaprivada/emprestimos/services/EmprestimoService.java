@@ -2,8 +2,7 @@ package com.previdenciaprivada.emprestimos.services;
 
 import com.previdenciaprivada.emprestimos.dao.EmprestimoDAO;
 import com.previdenciaprivada.emprestimos.dto.EmprestimoDTORequest;
-import com.previdenciaprivada.emprestimos.models.Emprestimo;
-import com.previdenciaprivada.emprestimos.models.Status;
+import com.previdenciaprivada.emprestimos.dao.Emprestimo;
 import org.springframework.stereotype.Service;
 
 

@@ -1,7 +1,7 @@
 package com.previdenciaprivada.emprestimos.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.previdenciaprivada.emprestimos.models.Status;
+import com.previdenciaprivada.emprestimos.services.Status;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
