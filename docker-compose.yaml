@@ -9,6 +9,9 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://psql:5432/gerenciamento
       SPRING_DATASOURCE_USERNAME: test
       SPRING_DATASOURCE_PASSWORD: test
+      spring.jpa.properties.hibernate.show_sql: true
+      logging.level.org.hibernate.type.descriptor.sql: trace
+      org.hibernate.event.internal.DefaultPersistEventListener: true
 
     ports:
       - 8083:8080

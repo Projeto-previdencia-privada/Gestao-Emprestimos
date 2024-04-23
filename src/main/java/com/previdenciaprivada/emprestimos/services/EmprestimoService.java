@@ -15,21 +15,23 @@ public class EmprestimoService {
     private static final BigDecimal taxaRestricao = new BigDecimal("0.3");
 
     private final EmprestimoDAO emprestimoDAO;
-
     private final BeneficiosConnection beneficiosConnection;
-    public EmprestimoService(EmprestimoDAO emprestimoDAO, BeneficiosConnection beneficiosConnection) {
+    private final InstituicaoService instituicaoService;
+
+    public EmprestimoService(EmprestimoDAO emprestimoDAO, BeneficiosConnection beneficiosConnection, InstituicaoService instituicaoService) {
         this.emprestimoDAO = emprestimoDAO;
         this.beneficiosConnection = beneficiosConnection;
+        this.instituicaoService = instituicaoService;
     }
 
-    public String addEmprestimo(EmprestimoDTORequest emprestimoInfo) throws NumberFormatException{
+    public String addEmprestimo(EmprestimoDTORequest emprestimoInfo, long idInstituicao) throws NumberFormatException{
             this.validarCPF(emprestimoInfo.CPF());
 
             if(this.verificarEmprestimo( BigDecimal.valueOf(emprestimoInfo.valorParcela()), emprestimoInfo.CPF()) ){
                     return "";
             }
 
-            Emprestimo idEmprestimo = emprestimoDAO.addEmprestimo(emprestimoInfo.CPF(), BigDecimal.valueOf(emprestimoInfo.valorParcela()), emprestimoInfo.quantidadeParcelas());
+            Emprestimo idEmprestimo = emprestimoDAO.addEmprestimo(emprestimoInfo.CPF(), BigDecimal.valueOf(emprestimoInfo.valorParcela()), emprestimoInfo.quantidadeParcelas(), idInstituicao);
             return idEmprestimo.getIdEmprestimo().toString();
     }
 
@@ -88,5 +90,15 @@ public class EmprestimoService {
             return;
         }
         throw new NumberFormatException();
+    }
+
+    public List<Emprestimo> getEmprestimosPorCPF(String CPF, String apiKey) {
+        long idInstituicao = instituicaoService.ChaveParaId(apiKey);
+
+        return emprestimoDAO.getEmprestimosPorInstituicaoECPF(CPF, idInstituicao).orElseThrow();
+    }
+
+    public List<Emprestimo> getEmprestimosPorInstituicao(long idInstituicao) {
+        return emprestimoDAO.getEmprestimosPorInstituicao(idInstituicao).orElseThrow();
     }
 }

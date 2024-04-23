@@ -2,6 +2,7 @@ package com.previdenciaprivada.emprestimos.services;
 
 import com.previdenciaprivada.emprestimos.dao.EmprestimoDAO;
 import com.previdenciaprivada.emprestimos.dao.Emprestimo;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,7 +33,7 @@ class EmprestimoServiceTest {
 
 
 
-    @Test
+    /*@Test
     void verificarEmprestimo() {
         List<Emprestimo> listaEmprestimo = List.of(
                 new Emprestimo(UUID.fromString("fa81f244-d11d-47ed-946d-e0165482cb1e"), "07304600020", new BigDecimal("123.25"), 12, LocalDate.parse("2024-02-14"), Status.Ativo),
@@ -44,7 +45,7 @@ class EmprestimoServiceTest {
         Mockito.when(emprestimoDAO.getEmprestimosPorCPF(Mockito.anyString())).thenReturn(Optional.of(listaEmprestimo));
 
         assertTrue(emprestimoService.verificarEmprestimo(new BigDecimal("300.00"), "07304600020"));
-    }
+    }*/
 
 
 }

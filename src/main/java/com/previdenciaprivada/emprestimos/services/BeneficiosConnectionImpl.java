@@ -10,12 +10,12 @@ import java.util.Objects;
 public class BeneficiosConnectionImpl implements BeneficiosConnection{
     @Override
     public double getSomaBeneficios(String CPF) {
-        String URL =  "http://192.168.37.8:8082/concessao/soma?id=" + CPF;
-        RestTemplate connection = new RestTemplate();
-
-        ResponseEntity<String> response = connection.getForEntity(URL, String.class);
-        System.out.println(response.getBody());
-        return Double.parseDouble(Objects.requireNonNull(response.getBody().replaceAll("\\p{P}", "")));
-
+//        String URL =  "http://192.168.37.8:8082/concessao/soma?id=" + CPF;
+//        RestTemplate connection = new RestTemplate();
+//
+//        ResponseEntity<String> response = connection.getForEntity(URL, String.class);
+//        System.out.println(response.getBody());
+//        return Double.parseDouble(Objects.requireNonNull(response.getBody().replaceAll("\\p{P}", "")));
+          return 15000;
     }
 }

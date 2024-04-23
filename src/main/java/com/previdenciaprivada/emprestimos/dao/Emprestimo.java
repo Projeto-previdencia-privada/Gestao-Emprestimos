@@ -3,6 +3,8 @@ package com.previdenciaprivada.emprestimos.dao;
 import com.previdenciaprivada.emprestimos.services.Status;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -32,6 +34,11 @@ public class Emprestimo {
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
     private Status status;
+
+    @ManyToOne(fetch= FetchType.LAZY, cascade = CascadeType.ALL)
+    @OnDelete(action= OnDeleteAction.CASCADE)
+    @JoinColumn(name="instituicao_id", referencedColumnName = "id")
+    private Instituicao instituicao;
 
 }
 
