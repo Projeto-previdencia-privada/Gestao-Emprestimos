@@ -1,23 +1,18 @@
 package com.previdenciaprivada.emprestimos.controller;
 
-import com.previdenciaprivada.emprestimos.dao.Instituicao;
 import com.previdenciaprivada.emprestimos.dto.EmprestimoDTORequest;
-import com.previdenciaprivada.emprestimos.dto.EmprestimoDTOTerminate;
 import com.previdenciaprivada.emprestimos.dto.EmprestimoDTOUpdate;
 import com.previdenciaprivada.emprestimos.dto.EmprestimoDTOView;
 import com.previdenciaprivada.emprestimos.dao.Emprestimo;
 import com.previdenciaprivada.emprestimos.services.Auth;
 import com.previdenciaprivada.emprestimos.services.EmprestimoService;
-import com.previdenciaprivada.emprestimos.services.InstituicaoService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -33,7 +28,7 @@ public class EmprestimosController {
     }
 
     @PostMapping("cadastro")
-    public ResponseEntity<String> cadastrarEmprestimo(
+    public ResponseEntity<Map<String, String>> cadastrarEmprestimo(
             @RequestBody EmprestimoDTORequest emprestimoInfo,
             @RequestHeader(HttpHeaders.AUTHORIZATION) String apiKey
             )
@@ -43,9 +38,9 @@ public class EmprestimosController {
 
             String idEmprestimo = emprestimoService.addEmprestimo(emprestimoInfo, idInstituicao);
             if (!idEmprestimo.isEmpty()) {
-                return new ResponseEntity<>(idEmprestimo, HttpStatus.CREATED);
+                return new ResponseEntity<>(Collections.singletonMap("id-emprestimo", idEmprestimo), HttpStatus.CREATED);
             }
-            return new ResponseEntity<>(idEmprestimo, HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         catch (NumberFormatException err) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Formato de CPF inválido", err);

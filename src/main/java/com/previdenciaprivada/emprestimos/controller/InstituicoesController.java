@@ -2,13 +2,11 @@ package com.previdenciaprivada.emprestimos.controller;
 
 import com.previdenciaprivada.emprestimos.dao.Instituicao;
 import com.previdenciaprivada.emprestimos.dao.InstituicaoDAO;
-import com.previdenciaprivada.emprestimos.dao.InstituicaoRepository;
 import com.previdenciaprivada.emprestimos.dto.InstituicaoDTORequest;
 import com.previdenciaprivada.emprestimos.services.Auth;
-import com.previdenciaprivada.emprestimos.services.EmprestimoService;
 import com.previdenciaprivada.emprestimos.services.InstituicaoService;
 import com.previdenciaprivada.emprestimos.services.RegistroService;
-import jakarta.transaction.Transactional;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,31 +22,30 @@ public class InstituicoesController {
 
     private final InstituicaoDAO instituicaoDAO;
     private final InstituicaoService instituicaoService;
-    private final EmprestimoService emprestimoService;
     private final Auth auth;
     private final RegistroService registroService;
-    private final InstituicaoRepository instituicaoRepository;
 
-    public InstituicoesController(InstituicaoDAO instituicaoDAO, InstituicaoService instituicaoService, InstituicaoService instituicaoService1, EmprestimoService emprestimoService, Auth auth, RegistroService registroService, InstituicaoRepository instituicaoRepository) {
+    public InstituicoesController(InstituicaoDAO instituicaoDAO, InstituicaoService instituicaoService, Auth auth, RegistroService registroService) {
         this.instituicaoDAO = instituicaoDAO;
-        this.instituicaoService = instituicaoService1;
-        this.emprestimoService = emprestimoService;
+        this.instituicaoService = instituicaoService;
         this.auth = auth;
         this.registroService = registroService;
-        this.instituicaoRepository = instituicaoRepository;
     }
 
 
     @PostMapping("cadastro")
-    public ResponseEntity<String> cadastrarInstituicao(@RequestBody InstituicaoDTORequest instituicaoInfo) {
+    public ResponseEntity<Map<String, String>> cadastrarInstituicao(@RequestBody InstituicaoDTORequest instituicaoInfo) {
         try {
             Instituicao instituicao = instituicaoDAO.addInstituicao(instituicaoInfo.nome(), instituicaoInfo.CNPJ());
             System.out.println(instituicao);
-            return new ResponseEntity<>(instituicao.getChaveAPI(), HttpStatus.CREATED);
+            return new ResponseEntity<>(Collections.singletonMap("chave-api",instituicao.getChaveAPI()), HttpStatus.CREATED);
 
         }
+        catch (DataIntegrityViolationException err) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body("");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -96,6 +93,7 @@ public class InstituicoesController {
         try {
             if (auth.autenticarOperacaoInstituicao(apiKey, cnpj)) {
                registroService.transferirDados(instituicaoService.ChaveParaId(apiKey), apiKey);
+               instituicaoDAO.deleteInstituicao(cnpj);
                return new ResponseEntity<>(HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);

@@ -35,9 +35,8 @@ public class Emprestimo {
     @Column(length = 20)
     private Status status;
 
-    @ManyToOne(fetch= FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @OnDelete(action= OnDeleteAction.CASCADE)
-    @JoinColumn(name="instituicao_id", referencedColumnName = "id")
     private Instituicao instituicao;
 
 }

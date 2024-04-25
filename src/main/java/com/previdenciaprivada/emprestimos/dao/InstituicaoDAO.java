@@ -1,7 +1,6 @@
 package com.previdenciaprivada.emprestimos.dao;
 
 import com.previdenciaprivada.emprestimos.services.Auth;
-import com.previdenciaprivada.emprestimos.services.InstituicaoService;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -34,6 +33,10 @@ public class InstituicaoDAO {
 
     public void updateInstituicao(Instituicao instituicao) {
         instituicaoRepository.save(instituicao);
+    }
+
+    public void deleteInstituicao(String cnpj) {
+        instituicaoRepository.deleteInstituicaoByCNPJ(cnpj);
     }
 
 

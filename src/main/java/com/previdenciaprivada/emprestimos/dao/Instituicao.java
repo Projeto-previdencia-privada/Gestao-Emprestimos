@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import java.util.Set;
 
 @Entity
 @Table(name="instituicoes")
@@ -24,4 +28,7 @@ public class Instituicao {
 
     @Column(name="chave_acesso")
     private String chaveAPI;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="instituicao")
+    private Set<Emprestimo> emprestimos;
 }
