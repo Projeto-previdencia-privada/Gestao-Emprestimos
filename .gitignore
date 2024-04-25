@@ -1,5 +1,6 @@
 HELP.md
 data/
+.env
 target/
 data/
 !.mvn/wrapper/maven-wrapper.jar
