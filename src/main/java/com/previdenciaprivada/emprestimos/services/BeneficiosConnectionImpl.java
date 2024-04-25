@@ -13,7 +13,7 @@ public class BeneficiosConnectionImpl implements BeneficiosConnection{
     @Override
     public double getSomaBeneficios(String CPF) {
         Dotenv dotenv = Dotenv.load();
-        String URL =  "http://" + dotenv.get("SERVER_URL")  + "/concessao/soma?id=" + CPF;
+        String URL =  "http://" + dotenv.get("SERVER_URL")  + "/concessao/soma/" + CPF;
         RestTemplate connection = new RestTemplate();
 
         ResponseEntity<BeneficioDTOResponse> response = connection.getForEntity(URL, BeneficioDTOResponse.class);
