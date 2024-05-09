@@ -93,12 +93,9 @@ public class EmprestimoService {
     }
 
     public List<Emprestimo> getEmprestimosPorCPF(String CPF, String apiKey) {
-        long idInstituicao = instituicaoService.ChaveParaId(apiKey);
+        long idInstituicao = instituicaoService.chaveParaId(apiKey);
 
         return emprestimoDAO.getEmprestimosPorInstituicaoECPF(CPF, idInstituicao).orElseThrow();
     }
 
-    public List<Emprestimo> getEmprestimosPorInstituicao(long idInstituicao) {
-        return emprestimoDAO.getEmprestimosPorInstituicao(idInstituicao).orElseThrow();
-    }
 }

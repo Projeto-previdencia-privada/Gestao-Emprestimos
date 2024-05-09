@@ -5,7 +5,6 @@ import com.previdenciaprivada.emprestimos.dao.InstituicaoDAO;
 import com.previdenciaprivada.emprestimos.dto.InstituicaoDTORequest;
 import com.previdenciaprivada.emprestimos.services.Auth;
 import com.previdenciaprivada.emprestimos.services.InstituicaoService;
-import com.previdenciaprivada.emprestimos.services.RegistroService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,13 +22,11 @@ public class InstituicoesController {
     private final InstituicaoDAO instituicaoDAO;
     private final InstituicaoService instituicaoService;
     private final Auth auth;
-    private final RegistroService registroService;
 
-    public InstituicoesController(InstituicaoDAO instituicaoDAO, InstituicaoService instituicaoService, Auth auth, RegistroService registroService) {
+    public InstituicoesController(InstituicaoDAO instituicaoDAO, InstituicaoService instituicaoService, Auth auth) {
         this.instituicaoDAO = instituicaoDAO;
         this.instituicaoService = instituicaoService;
         this.auth = auth;
-        this.registroService = registroService;
     }
 
 
@@ -92,8 +89,7 @@ public class InstituicoesController {
     {
         try {
             if (auth.autenticarOperacaoInstituicao(apiKey, cnpj)) {
-               registroService.transferirDados(instituicaoService.ChaveParaId(apiKey), apiKey);
-               instituicaoDAO.deleteInstituicao(cnpj);
+               instituicaoService.deletarInstituicao(apiKey, cnpj);
                return new ResponseEntity<>(HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
