@@ -58,4 +58,8 @@ public class EmprestimoDAOImpl implements EmprestimoDAO{
     public Optional<List<Emprestimo>> getEmprestimosPorInstituicao(long instituicao) {
         return emprestimoRepository.findEmprestimoByInstituicaoId(instituicao);
     }
+
+    public Optional<List<Emprestimo>> getEmprestimoPorCPF(String cpf) {
+        return emprestimoRepository.findEmprestimoByCPF(cpf);
+    }
 }

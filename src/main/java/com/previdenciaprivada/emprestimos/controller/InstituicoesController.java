@@ -30,7 +30,7 @@ public class InstituicoesController {
     }
 
 
-    @PostMapping("cadastro")
+    @PostMapping()
     public ResponseEntity<Map<String, String>> cadastrarInstituicao(@RequestBody InstituicaoDTORequest instituicaoInfo) {
         try {
             Instituicao instituicao = instituicaoDAO.addInstituicao(instituicaoInfo.nome(), instituicaoInfo.CNPJ());
@@ -65,7 +65,7 @@ public class InstituicoesController {
         }
     }
 
-    @PutMapping("/{cnpj}/chave")
+    @PatchMapping("{cnpj}")
     public ResponseEntity<Map<String,String>> gerarNovaChave(
             @PathVariable("cnpj") String cnpj,
             @RequestHeader(HttpHeaders.AUTHORIZATION) String apiKey
@@ -77,7 +77,7 @@ public class InstituicoesController {
             return ResponseEntity.ok(Collections.singletonMap("chave-api", novaChave));
         }
         catch (NoSuchElementException err) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -92,7 +92,7 @@ public class InstituicoesController {
                instituicaoService.deletarInstituicao(apiKey, cnpj);
                return new ResponseEntity<>(HttpStatus.OK);
             }
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         catch (NoSuchElementException err) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -3,12 +3,14 @@ package com.previdenciaprivada.emprestimos.services;
 import com.previdenciaprivada.emprestimos.dao.EmprestimoDAO;
 import com.previdenciaprivada.emprestimos.dto.EmprestimoDTORequest;
 import com.previdenciaprivada.emprestimos.dao.Emprestimo;
+import com.previdenciaprivada.emprestimos.dto.EmprestimoDTOView;
 import org.springframework.stereotype.Service;
 
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class EmprestimoService {
@@ -98,4 +100,15 @@ public class EmprestimoService {
         return emprestimoDAO.getEmprestimosPorInstituicaoECPF(CPF, idInstituicao).orElseThrow();
     }
 
+    public List<EmprestimoDTOView> emprestimoToEmprestimoDTO(List<Emprestimo> emprestimos) {
+        List<EmprestimoDTOView> emprestimosView = emprestimos.stream()
+                .map( (emprestimo) -> new EmprestimoDTOView(
+                        emprestimo.getIdEmprestimo(),
+                        emprestimo.getCPF(),
+                        emprestimo.getValorParcela(),
+                        emprestimo.getQuantidadeParcelas(),
+                        emprestimo.getDataEmprestimo(),
+                        emprestimo.getStatus()) ).collect(Collectors.toList());
+        return emprestimosView;
+    }
 }
