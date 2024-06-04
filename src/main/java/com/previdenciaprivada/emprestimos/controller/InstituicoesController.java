@@ -5,6 +5,7 @@ import com.previdenciaprivada.emprestimos.dao.InstituicaoDAO;
 import com.previdenciaprivada.emprestimos.dto.InstituicaoDTORequest;
 import com.previdenciaprivada.emprestimos.services.Auth;
 import com.previdenciaprivada.emprestimos.services.InstituicaoService;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,9 +18,8 @@ import java.util.*;
 
 @RestController
 @RequestMapping("api/v1/instituicoes")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "http://192.168.37.16:8080")
 public class InstituicoesController {
-
     private final InstituicaoDAO instituicaoDAO;
     private final InstituicaoService instituicaoService;
     private final Auth auth;
@@ -29,6 +29,8 @@ public class InstituicoesController {
         this.instituicaoService = instituicaoService;
         this.auth = auth;
     }
+
+    public final Dotenv dotenv = Dotenv.load();
 
 
     @PostMapping()
