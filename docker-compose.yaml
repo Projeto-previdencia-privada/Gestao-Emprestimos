@@ -19,6 +19,9 @@ services:
       log4j.logger.org.springframework.transaction: DEBUG
       log4j.logger.org.springframework.transaction.interceptor: trace
 
+    volumes:
+      - ./src/main/resources/assets:/assets
+
     ports:
       - 8083:8080
 

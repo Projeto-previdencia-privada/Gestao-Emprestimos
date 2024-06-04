@@ -8,15 +8,16 @@ import com.previdenciaprivada.emprestimos.services.InstituicaoService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.io.*;
+import java.util.*;
 
 @RestController
 @RequestMapping("api/v1/instituicoes")
+@CrossOrigin(origins = "http://localhost:5173")
 public class InstituicoesController {
 
     private final InstituicaoDAO instituicaoDAO;
@@ -33,9 +34,8 @@ public class InstituicoesController {
     @PostMapping()
     public ResponseEntity<Map<String, String>> cadastrarInstituicao(@RequestBody InstituicaoDTORequest instituicaoInfo) {
         try {
-            Instituicao instituicao = instituicaoDAO.addInstituicao(instituicaoInfo.nome(), instituicaoInfo.CNPJ());
-            System.out.println(instituicao);
-            return new ResponseEntity<>(Collections.singletonMap("chave-api",instituicao.getChaveAPI()), HttpStatus.CREATED);
+            String chave = instituicaoDAO.addInstituicao(instituicaoInfo.nome(), instituicaoInfo.CNPJ());
+            return new ResponseEntity<>(Collections.singletonMap("chave-api",chave), HttpStatus.CREATED);
 
         }
         catch (DataIntegrityViolationException err) {
@@ -93,6 +93,47 @@ public class InstituicoesController {
                return new ResponseEntity<>(HttpStatus.OK);
             }
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        catch (NoSuchElementException err) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<InstituicaoDTORequest>> vizualizarTodasInstituicoes() {
+        return new ResponseEntity<>(instituicaoService.getAllInstituicooes(), HttpStatus.OK);
+    }
+
+//    @PatchMapping("/{cnpj}/imagem")
+//    public ResponseEntity<byte[]> uploadImagemInstituicao(@PathVariable String cnpj) {
+//
+//    }
+
+//     Dado instituição e caminho da imagem, enviar imagem
+    @GetMapping(value = {"{cnpj}/imagem"}, produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<byte[]> getImagemInstituicao(@PathVariable String cnpj) throws IOException {
+        try {
+            FileInputStream fileInputStream = new FileInputStream("assets/" + cnpj + ".jpg");
+            return new ResponseEntity<>(fileInputStream.readAllBytes(), HttpStatus.OK);
+        }
+        catch (FileNotFoundException err) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // Dado imagem, associa esta a uma instituição
+    @PatchMapping("{cnpj}/imagem")
+    public ResponseEntity<HttpStatus> cadastrarImagemInstituicao(@PathVariable String cnpj, @RequestBody String imageURI) throws IOException {
+        byte[] data = Base64.getDecoder().decode(imageURI.split(",")[1].replace("\n", ""));
+        FileOutputStream fileOutputStream = new FileOutputStream("assets/"+cnpj+".jpg", false);
+        fileOutputStream.write(data);
+        fileOutputStream.close();
+
+        try {
+            Instituicao instituicao = instituicaoService.getInstituicao(cnpj);
+            instituicao.setImage_path(cnpj+".jpg");
+            instituicaoService.atualizarInstituicao(instituicao);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
         catch (NoSuchElementException err) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

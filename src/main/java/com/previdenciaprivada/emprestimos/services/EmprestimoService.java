@@ -1,6 +1,7 @@
 package com.previdenciaprivada.emprestimos.services;
 
 import com.previdenciaprivada.emprestimos.dao.EmprestimoDAO;
+import com.previdenciaprivada.emprestimos.dao.Instituicao;
 import com.previdenciaprivada.emprestimos.dto.EmprestimoDTORequest;
 import com.previdenciaprivada.emprestimos.dao.Emprestimo;
 import com.previdenciaprivada.emprestimos.dto.EmprestimoDTOView;
@@ -18,22 +19,22 @@ public class EmprestimoService {
 
     private final EmprestimoDAO emprestimoDAO;
     private final BeneficiosConnection beneficiosConnection;
-    private final InstituicaoService instituicaoService;
 
     public EmprestimoService(EmprestimoDAO emprestimoDAO, BeneficiosConnection beneficiosConnection, InstituicaoService instituicaoService) {
         this.emprestimoDAO = emprestimoDAO;
         this.beneficiosConnection = beneficiosConnection;
-        this.instituicaoService = instituicaoService;
     }
 
-    public String addEmprestimo(EmprestimoDTORequest emprestimoInfo, long idInstituicao) throws NumberFormatException{
-            this.validarCPF(emprestimoInfo.CPF());
+    public String addEmprestimo(EmprestimoDTORequest emprestimoInfo, Instituicao instituicao) throws NumberFormatException{
+            if(!this.validarCPF( emprestimoInfo.CPF() )) {
+                throw new NumberFormatException("CPF invalido");
+            }
 
             if(this.verificarEmprestimo( BigDecimal.valueOf(emprestimoInfo.valorParcela()), emprestimoInfo.CPF()) ){
                     return "";
             }
 
-            Emprestimo idEmprestimo = emprestimoDAO.addEmprestimo(emprestimoInfo.CPF(), BigDecimal.valueOf(emprestimoInfo.valorParcela()), emprestimoInfo.quantidadeParcelas(), idInstituicao);
+            Emprestimo idEmprestimo = emprestimoDAO.addEmprestimo(emprestimoInfo.CPF(), BigDecimal.valueOf(emprestimoInfo.valorParcela()), emprestimoInfo.quantidadeParcelas(), instituicao);
             return idEmprestimo.getIdEmprestimo().toString();
     }
 
@@ -86,18 +87,21 @@ public class EmprestimoService {
         return novoTotal.compareTo(totalDisponivel) > 0;
 
    }
-    public void validarCPF(String CPF) throws NumberFormatException {
+    public boolean validarCPF(String CPF) {
         if(CPF.length() == 11) {
-            Long.valueOf(CPF);
-            return;
+            try {
+                Long.valueOf(CPF);
+                return true;
+            }
+            catch (NumberFormatException e) {
+                return false;
+            }
         }
-        throw new NumberFormatException();
+        return false;
     }
 
-    public List<Emprestimo> getEmprestimosPorCPF(String CPF, String apiKey) {
-        long idInstituicao = instituicaoService.chaveParaId(apiKey);
-
-        return emprestimoDAO.getEmprestimosPorInstituicaoECPF(CPF, idInstituicao).orElseThrow();
+    public List<Emprestimo> getEmprestimosPorCPF(String cpf) {
+        return emprestimoDAO.getEmprestimoPorCPF(cpf).orElseThrow();
     }
 
     public List<EmprestimoDTOView> emprestimoToEmprestimoDTO(List<Emprestimo> emprestimos) {
@@ -108,7 +112,22 @@ public class EmprestimoService {
                         emprestimo.getValorParcela(),
                         emprestimo.getQuantidadeParcelas(),
                         emprestimo.getDataEmprestimo(),
+                        emprestimo.getInstituicao().getNome(),
                         emprestimo.getStatus()) ).collect(Collectors.toList());
         return emprestimosView;
+    }
+
+    public BigDecimal getTotalCredito(String cpf) {
+        return BigDecimal.valueOf(beneficiosConnection.getSomaBeneficios(cpf)).multiply(taxaRestricao);
+    }
+
+    public BigDecimal getCreditoDisponivel(String cpf) {
+        List<Emprestimo> emprestimoList = emprestimoDAO.getEmprestimosPorCPF(cpf).orElseThrow();
+
+        BigDecimal somaParcelas = emprestimoList.stream()
+                .map(emprestimo -> emprestimo.getValorParcela())
+                .reduce(new BigDecimal(0), (somaAcumulada, parcela) -> somaAcumulada.add(parcela));
+
+        return this.getTotalCredito(cpf).subtract(somaParcelas);
     }
 }

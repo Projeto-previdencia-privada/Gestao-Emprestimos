@@ -1,12 +1,14 @@
 package com.previdenciaprivada.emprestimos.services;
 
 import com.previdenciaprivada.emprestimos.dao.*;
+import com.previdenciaprivada.emprestimos.dto.InstituicaoDTORequest;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class InstituicaoService {
@@ -58,5 +60,21 @@ public class InstituicaoService {
 
             registroRepository.save(registro);
         }
+    }
+
+    public Instituicao getInstituicao(String cnpj) {
+        // TODO THROW
+        return instituicaoDAO.getInstituicaoPorCNPJ(cnpj).orElseThrow();
+    }
+
+    public List<InstituicaoDTORequest> getAllInstituicooes() {
+        return instituicaoDAO.getAllInstituicao().stream()
+                .map( (instituicao) ->
+                    new InstituicaoDTORequest(instituicao.getNome(), instituicao.getCNPJ())
+                ).collect(Collectors.toList());
+    }
+
+    public void atualizarInstituicao(Instituicao instituicao) {
+        instituicaoDAO.updateInstituicao(instituicao);
     }
 }

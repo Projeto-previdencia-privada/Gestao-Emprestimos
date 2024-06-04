@@ -4,6 +4,7 @@ import com.previdenciaprivada.emprestimos.dao.Emprestimo;
 import com.previdenciaprivada.emprestimos.dao.EmprestimoDAO;
 import com.previdenciaprivada.emprestimos.dao.Instituicao;
 import com.previdenciaprivada.emprestimos.dao.InstituicaoDAO;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
 import java.security.SecureRandom;
@@ -26,22 +27,25 @@ public class Auth {
         byte[] bytes = new byte[32];
         number.nextBytes(bytes);
 
-        return Base64.getEncoder().encodeToString(bytes);
+        return Base64.getUrlEncoder().encodeToString(bytes);
     }
 
-    public long validarCadastro(String apiKey) {
-        Instituicao instituicao = instituicaoDAO.getInstituicaoPorChave(apiKey).orElseThrow();
-        return  instituicao.getId();
+    public static String hashChave(String chave) {
+        return BCrypt.hashpw(chave, BCrypt.gensalt(12));
+    }
+
+    public boolean validarCadastro(String cnpj, String apiKey) {
+        Instituicao instituicao = instituicaoDAO.getInstituicaoPorCNPJ(cnpj).orElseThrow();
+        return BCrypt.checkpw(apiKey, instituicao.getChaveAPI());
     }
 
     public boolean autenticarOperacaoEmprestimo(String apiKey, String idEmprestimo) {
         Emprestimo emprestimo = emprestimoDAO.getEmprestimoPorId(UUID.fromString(idEmprestimo)).orElseThrow();
-
-        return emprestimo.getInstituicao().getChaveAPI().equals(apiKey);
+        return BCrypt.checkpw(apiKey, emprestimo.getInstituicao().getChaveAPI());
     }
 
     public boolean autenticarOperacaoInstituicao(String apiKey, String cnpj) {
         Instituicao instituicao = instituicaoDAO.getInstituicaoPorCNPJ(cnpj).orElseThrow();
-        return instituicao.getChaveAPI().equals(apiKey);
+        return BCrypt.checkpw(apiKey, instituicao.getChaveAPI());
     }
 }
