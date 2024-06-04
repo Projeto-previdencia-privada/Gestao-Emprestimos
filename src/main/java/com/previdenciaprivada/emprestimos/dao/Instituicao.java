@@ -29,6 +29,10 @@ public class Instituicao {
     @Column(name="chave_acesso")
     private String chaveAPI;
 
+    @Column(name = "nome_imagem")
+    private String image_path;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy="instituicao")
     private Set<Emprestimo> emprestimos;
+
 }

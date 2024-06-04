@@ -21,7 +21,7 @@ public class EmprestimoDAOImpl implements EmprestimoDAO{
     }
 
     @Override
-    public Emprestimo addEmprestimo(String CPF, BigDecimal valorParcela, int quantidadeParcelas, long id) {
+    public Emprestimo addEmprestimo(String CPF, BigDecimal valorParcela, int quantidadeParcelas, Instituicao instituicao) {
         Emprestimo emprestimo = new Emprestimo();
 
         emprestimo.setIdEmprestimo(UUID.randomUUID());
@@ -30,7 +30,7 @@ public class EmprestimoDAOImpl implements EmprestimoDAO{
         emprestimo.setQuantidadeParcelas(quantidadeParcelas);
         emprestimo.setDataEmprestimo(LocalDate.now());
         emprestimo.setStatus(Status.Ativo);
-        emprestimo.setInstituicao(instituicaoRepository.findById(id).orElseThrow());
+        emprestimo.setInstituicao(instituicao);
         emprestimoRepository.save(emprestimo);
         return emprestimo;
     }

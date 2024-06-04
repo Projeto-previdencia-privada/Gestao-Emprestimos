@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface EmprestimoDAO {
 
-    Emprestimo addEmprestimo(String CPF, BigDecimal valorParcela, int quantidadeParcelas, long apiKey);
+    Emprestimo addEmprestimo(String CPF, BigDecimal valorParcela, int quantidadeParcelas, Instituicao instituicao);
 
     void updateEmprestimo(Emprestimo emprestimo);
 
@@ -18,4 +18,6 @@ public interface EmprestimoDAO {
     Optional<List<Emprestimo>> getEmprestimosPorInstituicaoECPF(String CPF, long instituicao);
 
     Optional<List<Emprestimo>> getEmprestimosPorInstituicao(long instituicao);
+
+    public Optional<List<Emprestimo>> getEmprestimoPorCPF(String cpf);
 }

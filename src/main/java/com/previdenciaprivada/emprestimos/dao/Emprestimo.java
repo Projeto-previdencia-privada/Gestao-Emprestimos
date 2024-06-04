@@ -36,6 +36,7 @@ public class Emprestimo {
     private Status status;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "instituicao_id", foreignKey = @ForeignKey(name = "INSTITUICAO_FK_KEY"))
     @OnDelete(action= OnDeleteAction.CASCADE)
     private Instituicao instituicao;
 

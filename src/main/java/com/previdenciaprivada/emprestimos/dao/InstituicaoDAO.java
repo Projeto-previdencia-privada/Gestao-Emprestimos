@@ -4,6 +4,7 @@ import com.previdenciaprivada.emprestimos.services.Auth;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.List;
 
 @Repository
 public class InstituicaoDAO {
@@ -14,13 +15,19 @@ public class InstituicaoDAO {
         this.instituicaoRepository = instituicaoRepository;
     }
 
-    public Instituicao addInstituicao(String nome, String cnpj) {
+    public String addInstituicao(String nome, String cnpj) {
+        String chave = Auth.gerarChave();
         Instituicao instituicao = new Instituicao();
         instituicao.setNome(nome);
         instituicao.setCNPJ(cnpj);
-        instituicao.setChaveAPI(Auth.gerarChave());
+        instituicao.setChaveAPI(Auth.hashChave(chave));
 
-        return instituicaoRepository.save(instituicao);
+        instituicaoRepository.save(instituicao);
+        return chave;
+    }
+
+    public List<Instituicao> getAllInstituicao() {
+        return instituicaoRepository.findAll();
     }
 
     public Optional<Instituicao> getInstituicaoPorChave(String chave) {
