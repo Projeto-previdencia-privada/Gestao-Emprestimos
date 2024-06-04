@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS public.instituicoes
     cnpj         varchar(14) UNIQUE,
     chave_acesso varchar(255),
     nome         varchar(100),
+    nome_imagem character varying(255),
     CONSTRAINT instituicoes_pkey PRIMARY KEY (id)
 );
 

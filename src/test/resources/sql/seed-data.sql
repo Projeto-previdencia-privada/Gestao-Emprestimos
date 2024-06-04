@@ -1,5 +1,5 @@
-INSERT INTO "instituicoes" ("id", "cnpj", "chave_acesso", "nome") VALUES
-    (0, '01521799000124', 'bsf/ZO863q5jXPXQeUEDr7MjkRbkXt1s2Ut7oE/lj3g=', 'Banco do Brasil');
+INSERT INTO "instituicoes" ("id", "cnpj", "chave_acesso", "nome", "nome_imagem") VALUES
+    (0, '01521799000124', 'bsf/ZO863q5jXPXQeUEDr7MjkRbkXt1s2Ut7oE/lj3g=', 'Banco do Brasil', '01521799000124.jpg');
 
 INSERT INTO "emprestimos" ("id_emprestimo", "cpf", "valor_parcela", "quantidade_parcelas", "data_emprestimo", status, instituicao_id) VALUES
 ('fa81f244-d11d-47ed-946d-e0165482cb1e'::UUID, '07304600020', 123.25, 12, '2024-02-14', 'Ativo', 0),
