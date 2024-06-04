@@ -18,7 +18,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("api/v1/instituicoes")
-@CrossOrigin(origins = "http://192.168.37.16:8080")
+@CrossOrigin(origins = "*")
 public class InstituicoesController {
     private final InstituicaoDAO instituicaoDAO;
     private final InstituicaoService instituicaoService;

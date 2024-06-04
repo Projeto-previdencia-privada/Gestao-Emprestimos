@@ -20,7 +20,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("api/v1/emprestimos")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 public class EmprestimosController {
 
     private final EmprestimoService emprestimoService;
