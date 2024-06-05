@@ -12,7 +12,7 @@ public record EmprestimoDTOView(
         @JsonProperty("cpf") String cpf,
         @JsonProperty("valor-parcela") BigDecimal valorParcela,
         @JsonProperty("qtd-parcelas") int quantidadeParcelas,
-        @JsonProperty("data-empresitmo") LocalDate dataEmprestimo,
+        @JsonProperty("data-emprestimo") LocalDate dataEmprestimo,
         @JsonProperty("instituicao") String instituicao,
         @JsonProperty("status") Status status
 ) {
