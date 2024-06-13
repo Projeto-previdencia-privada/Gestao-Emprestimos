@@ -136,11 +136,11 @@ public class EmprestimosController {
     @GetMapping("{cpf}/info") public ResponseEntity<ClientInfo> getClientInfo(@PathVariable String cpf) {
         ClientInfo clientInfo = new ClientInfo(
                 emprestimoService.getTotalCredito(cpf),
-                BigDecimal.valueOf(15000),
+                emprestimoService.getRendaTotal(cpf),
                 emprestimoService.getCreditoDisponivel(cpf)
         );
 
-        return new ResponseEntity<>(clientInfo, HttpStatus.OK);
+        return clientInfo.creditoTotal().equals(0) ? new ResponseEntity<>(clientInfo, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
 

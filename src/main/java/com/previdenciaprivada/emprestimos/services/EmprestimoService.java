@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -100,7 +101,7 @@ public class EmprestimoService {
         return false;
     }
 
-    public List<Emprestimo> getEmprestimosPorCPF(String cpf) {
+    public List<Emprestimo> getEmprestimosPorCPF(String cpf) throws NoSuchElementException {
         return emprestimoDAO.getEmprestimoPorCPF(cpf).orElseThrow();
     }
 
@@ -129,5 +130,9 @@ public class EmprestimoService {
                 .reduce(new BigDecimal(0), (somaAcumulada, parcela) -> somaAcumulada.add(parcela));
 
         return this.getTotalCredito(cpf).subtract(somaParcelas);
+    }
+
+    public BigDecimal getRendaTotal(String cpf) {
+        return BigDecimal.valueOf(beneficiosConnection.getSomaBeneficios(cpf));
     }
 }
