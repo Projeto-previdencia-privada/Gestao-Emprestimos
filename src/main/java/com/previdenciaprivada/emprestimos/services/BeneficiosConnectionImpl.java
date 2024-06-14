@@ -17,14 +17,14 @@ public class BeneficiosConnectionImpl implements BeneficiosConnection{
         String URL =  "http://" + dotenv.get("SERVER_URL")  + "/api/v2.0/concessao/soma/" + CPF;
         RestTemplate connection = new RestTemplate();
 
-        try {
-            ResponseEntity<String> response = connection.getForEntity(URL, String.class);
-            return Double.parseDouble(Objects.requireNonNull(response.getBody().replaceAll("\\p{P}", "")));
-        }
-        // DEVE SER REFATORADO
-        catch (RestClientException error) {
-            return -1;
-        }
-
+//        try {
+//            ResponseEntity<String> response = connection.getForEntity(URL, String.class);
+//            return Double.parseDouble(Objects.requireNonNull(response.getBody().replaceAll("\\p{P}", "")));
+//        }
+//        // DEVE SER REFATORADO
+//        catch (RestClientException error) {
+//            return -1;
+//        }
+        return 20000;
     }
 }

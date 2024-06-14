@@ -48,36 +48,20 @@ public class EmprestimoService {
         return emprestimoDAO.getEmprestimoPorId(idEmprestimo).orElseThrow();
     }
 
-    public void alterarValorParcela(UUID idEmprestimo, double valorParcela) {
-        BigDecimal valorCorrigido = new BigDecimal(valorParcela);
-
-        Emprestimo emprestimo = emprestimoDAO.getEmprestimoPorId(idEmprestimo).orElseThrow();
-        emprestimo.setValorParcela(valorCorrigido);
-
-        emprestimoDAO.updateEmprestimo(emprestimo);
-    }
-
-    public void alterarQtdParcelas(UUID idEmprestimo, int quantidadeParcelas) {
-        Emprestimo emprestimo = emprestimoDAO.getEmprestimoPorId(idEmprestimo).orElseThrow();
-        emprestimo.setQuantidadeParcelas(quantidadeParcelas);
-
-        emprestimoDAO.updateEmprestimo(emprestimo);
-    }
-
-
     public void finalizarEmprestimo(UUID idEmprestimo) {
         Emprestimo emprestimo = emprestimoDAO.getEmprestimoPorId(idEmprestimo).orElseThrow();
         emprestimo.setStatus(Status.Concluido);
 
         emprestimoDAO.updateEmprestimo(emprestimo);
     }
+
    public boolean verificarEmprestimo(BigDecimal valorParcela, String CPF) {
         BigDecimal valorTotalBeneficios = BigDecimal.valueOf(beneficiosConnection.getSomaBeneficios(CPF));
 
         List<Emprestimo> emprestimos = emprestimoDAO.getEmprestimosPorCPF(CPF).orElseThrow();
         BigDecimal somaParcelas = emprestimos.stream()
                 .map(emprestimo -> emprestimo.getValorParcela())
-                .reduce(new BigDecimal(0), (a, b) -> a.add(b));
+                .reduce(new BigDecimal(0), (somaAcumulada, parcela) -> somaAcumulada.add(parcela));
 
         BigDecimal novoTotal = somaParcelas.add(valorParcela);
         BigDecimal totalDisponivel = valorTotalBeneficios.multiply(taxaRestricao);
@@ -88,6 +72,7 @@ public class EmprestimoService {
         return novoTotal.compareTo(totalDisponivel) > 0;
 
    }
+
     public boolean validarCPF(String CPF) {
         if(CPF.length() == 11) {
             try {
