@@ -24,7 +24,7 @@ public class BeneficiosConnectionImpl implements BeneficiosConnection{
             System.out.println(response);
             System.out.println(Double.parseDouble(Objects.requireNonNull(response.getBody())));
             System.out.println(new BigDecimal(response.getBody()));
-            return Double.parseDouble(Objects.requireNonNull(response.getBody().replaceAll("\\p{P}", "")));
+            return Double.parseDouble(Objects.requireNonNull(response.getBody()));
         }
         // DEVE SER REFATORADO
         catch (RestClientException error) {
