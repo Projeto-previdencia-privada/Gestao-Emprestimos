@@ -19,6 +19,9 @@ public class BeneficiosConnectionImpl implements BeneficiosConnection{
 
         try {
             ResponseEntity<String> response = connection.getForEntity(URL, String.class);
+            System.out.println("\n\n\n\n\n\n\n\n");
+            System.out.println(response);
+            System.out.println(Double.parseDouble(Objects.requireNonNull(response.getBody().replaceAll("\\p{P}", ""))));
             return Double.parseDouble(Objects.requireNonNull(response.getBody().replaceAll("\\p{P}", "")));
         }
         // DEVE SER REFATORADO
