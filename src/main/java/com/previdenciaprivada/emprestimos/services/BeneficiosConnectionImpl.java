@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Component
@@ -21,7 +22,8 @@ public class BeneficiosConnectionImpl implements BeneficiosConnection{
             ResponseEntity<String> response = connection.getForEntity(URL, String.class);
             System.out.println("\n\n\n\n\n\n\n\n");
             System.out.println(response);
-            System.out.println(Double.parseDouble(Objects.requireNonNull(response.getBody().replaceAll("\\p{P}", ""))));
+            System.out.println(Double.parseDouble(Objects.requireNonNull(response.getBody())));
+            System.out.println(new BigDecimal(response.getBody()));
             return Double.parseDouble(Objects.requireNonNull(response.getBody().replaceAll("\\p{P}", "")));
         }
         // DEVE SER REFATORADO
