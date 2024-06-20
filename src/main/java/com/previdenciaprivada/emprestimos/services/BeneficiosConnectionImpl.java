@@ -20,15 +20,11 @@ public class BeneficiosConnectionImpl implements BeneficiosConnection{
 
         try {
             ResponseEntity<String> response = connection.getForEntity(URL, String.class);
-            System.out.println("\n\n\n\n\n\n\n\n");
-            System.out.println(response);
-            System.out.println(Double.parseDouble(Objects.requireNonNull(response.getBody())));
-            System.out.println(new BigDecimal(response.getBody()));
             return Double.parseDouble(Objects.requireNonNull(response.getBody()));
         }
         // DEVE SER REFATORADO
         catch (RestClientException error) {
-            return -1;
+            return 0;
         }
     }
 }
