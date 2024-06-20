@@ -139,8 +139,7 @@ public class EmprestimosController {
                 emprestimoService.getRendaTotal(cpf),
                 emprestimoService.getCreditoDisponivel(cpf)
         );
-
-        return !clientInfo.creditoTotal().equals(0) ? new ResponseEntity<>(clientInfo, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return clientInfo.creditoTotal().compareTo(BigDecimal.ZERO) == 0 ? new ResponseEntity<>(HttpStatus.NOT_FOUND) : new ResponseEntity<>(clientInfo, HttpStatus.OK);
     }
 }
 
