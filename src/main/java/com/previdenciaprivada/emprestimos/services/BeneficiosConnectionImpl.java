@@ -20,7 +20,10 @@ public class BeneficiosConnectionImpl implements BeneficiosConnection{
 
         try {
             ResponseEntity<String> response = connection.getForEntity(URL, String.class);
-            return Double.parseDouble(Objects.requireNonNull(response.getBody()));
+            if(response.getStatusCode().is2xxSuccessful()) {
+                return Double.parseDouble(Objects.requireNonNull(response.getBody()));
+            }
+            return 0;
         }
         // DEVE SER REFATORADO
         catch (RestClientException error) {
