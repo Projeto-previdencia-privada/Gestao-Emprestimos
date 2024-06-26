@@ -1,6 +1,7 @@
 package com.previdenciaprivada.emprestimos.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.previdenciaprivada.emprestimos.dao.Emprestimo;
 import com.previdenciaprivada.emprestimos.services.Status;
 
 import java.math.BigDecimal;
@@ -16,4 +17,15 @@ public record EmprestimoDTOView(
         @JsonProperty("instituicao") String instituicao,
         @JsonProperty("status") Status status
 ) {
+    public static EmprestimoDTOView valueOf(Emprestimo emprestimo) {
+        return new EmprestimoDTOView(
+                emprestimo.getIdEmprestimo(),
+                emprestimo.getCPF(),
+                emprestimo.getValorParcela(),
+                emprestimo.getQuantidadeParcelas(),
+                emprestimo.getDataEmprestimo(),
+                emprestimo.getInstituicao().getNome(),
+                emprestimo.getStatus()
+        );
+    }
 }

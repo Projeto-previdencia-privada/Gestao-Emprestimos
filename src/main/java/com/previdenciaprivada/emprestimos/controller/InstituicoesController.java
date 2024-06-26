@@ -106,12 +106,6 @@ public class InstituicoesController {
         return new ResponseEntity<>(instituicaoService.getAllInstituicooes(), HttpStatus.OK);
     }
 
-//    @PatchMapping("/{cnpj}/imagem")
-//    public ResponseEntity<byte[]> uploadImagemInstituicao(@PathVariable String cnpj) {
-//
-//    }
-
-//     Dado instituição e caminho da imagem, enviar imagem
     @GetMapping(value = {"{cnpj}/imagem"}, produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<byte[]> getImagemInstituicao(@PathVariable String cnpj) throws IOException {
         try {
@@ -123,7 +117,6 @@ public class InstituicoesController {
         }
     }
 
-    // Dado imagem, associa esta a uma instituição
     @PatchMapping("{cnpj}/imagem")
     public ResponseEntity<HttpStatus> cadastrarImagemInstituicao(@PathVariable String cnpj, @RequestBody String imageURI) throws IOException {
         byte[] data = Base64.getDecoder().decode(imageURI.split(",")[1].replace("\n", ""));

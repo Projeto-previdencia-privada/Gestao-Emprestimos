@@ -92,14 +92,7 @@ public class EmprestimoService {
 
     public List<EmprestimoDTOView> emprestimoToEmprestimoDTO(List<Emprestimo> emprestimos) {
         List<EmprestimoDTOView> emprestimosView = emprestimos.stream()
-                .map( (emprestimo) -> new EmprestimoDTOView(
-                        emprestimo.getIdEmprestimo(),
-                        emprestimo.getCPF(),
-                        emprestimo.getValorParcela(),
-                        emprestimo.getQuantidadeParcelas(),
-                        emprestimo.getDataEmprestimo(),
-                        emprestimo.getInstituicao().getNome(),
-                        emprestimo.getStatus()) ).collect(Collectors.toList());
+                .map( (emprestimo) -> EmprestimoDTOView.valueOf(emprestimo)).collect(Collectors.toList());
         return emprestimosView;
     }
 

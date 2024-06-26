@@ -4,7 +4,6 @@ import com.previdenciaprivada.emprestimos.dao.*;
 import com.previdenciaprivada.emprestimos.dto.InstituicaoDTORequest;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.math.BigDecimal;
 import java.util.List;
